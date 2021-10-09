@@ -8,7 +8,8 @@ import (
 )
 
 func DefaultHandler(describies []*lottery.Describe, block *defs.Block) {
-	fmt.Println("aaa")
-	fmt.Println(describies)
 	fmt.Println(block.Number)
+	for _, d := range describies {
+		fmt.Println(d.Name, d.Schedule())
+	}
 }

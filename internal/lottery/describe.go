@@ -5,6 +5,7 @@ import (
 
 	"github.com/mabta/clpc/defs/draw"
 	"github.com/mabta/clpc/defs/lottery"
+	"github.com/mabta/clpc/fns"
 	"github.com/mabta/clpc/internal/cfg"
 )
 
@@ -31,6 +32,10 @@ func NewDescribe(name string, decimal, startHour, startMinute, dailyTimes int, d
 		DiffDuration: diffDuration,
 		DailyTimes:   dailyTimes,
 	}
+}
+
+func (d *Describe) Schedule() []uint64 {
+	return fns.DailyNSchedule(d.StartHour, d.StartMinute, d.Duration, d.DailyTimes)
 }
 
 func LoadDescribe(ct *cfg.TicketConfig) *Describe {
