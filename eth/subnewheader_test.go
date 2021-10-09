@@ -7,7 +7,7 @@ import (
 	"github.com/mabta/clpc/defs"
 )
 
-const testProvider = "wss://mainnet.infura.io/ws/v3/8ebcc29f900a4aebb1b345b484f7d9eb"
+const testProvider = "wss://mainnet.infura.io/ws/v3/<YOUR KEY>"
 
 func TestSubNewHeader(t *testing.T) {
 	handler := func(block *defs.Block) {

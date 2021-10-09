@@ -3,9 +3,9 @@ package lottery
 import (
 	"time"
 
+	"github.com/mabta/clpc/defs"
 	"github.com/mabta/clpc/defs/draw"
 	"github.com/mabta/clpc/defs/lottery"
-	"github.com/mabta/clpc/fns"
 	"github.com/mabta/clpc/internal/cfg"
 )
 
@@ -34,8 +34,8 @@ func NewDescribe(name string, decimal, startHour, startMinute, dailyTimes int, d
 	}
 }
 
-func (d *Describe) Schedule() []uint64 {
-	return fns.DailyNSchedule(d.StartHour, d.StartMinute, d.Duration, d.DailyTimes)
+func (d *Describe) Schedule() []*defs.Schedule {
+	return defs.DailyNSchedule(d.StartHour, d.StartMinute, d.Duration, d.DiffDuration, d.DailyTimes)
 }
 
 func LoadDescribe(ct *cfg.TicketConfig) *Describe {
