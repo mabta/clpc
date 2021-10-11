@@ -9,6 +9,7 @@ import (
 type Config struct {
 	Eth     *EthConfig      `json:"eth"`
 	Tickets []*TicketConfig `json:"tickets"`
+	Redis   *RedisConfig    `json:"redis"`
 }
 
 type EthConfig struct {
@@ -24,6 +25,11 @@ type TicketConfig struct {
 	Decimal      int           `json:"decimal"`
 	DailyTimes   int           `json:"daily_times"`
 	Drawer       string        `json:"drawer"`
+}
+type RedisConfig struct {
+	Addr     string `json:"addr"`
+	Password string `json:"password"`
+	DB       int    `json:"db"`
 }
 
 var Settings *Config

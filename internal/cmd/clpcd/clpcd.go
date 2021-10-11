@@ -6,10 +6,14 @@ import (
 	"github.com/mabta/clpc/internal/cfg"
 	"github.com/mabta/clpc/internal/lottery"
 	"github.com/mabta/clpc/internal/lottery/handler"
+	"github.com/mabta/clpc/internal/redis"
 )
 
 func init() {
 	if err := cfg.InitFrom("../../../config.json"); err != nil {
+		log.Fatal(err)
+	}
+	if err := redis.InitFrom(cfg.Settings.Redis); err != nil {
 		log.Fatal(err)
 	}
 }
