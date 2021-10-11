@@ -39,11 +39,11 @@ func DefaultHandler(describies []*lottery.Describe, block *defs.Block) {
 				result := d.Draw()
 				// 保存开奖结果
 				issue := db.NewIssue(d.Name, drawResult2Str(result), schedule.IssueStr(), block.Time, block.Number)
-				id, err := db.InsertIssue(issue)
-				if err != nil {
+				if _, err := db.InsertIssue(issue); err != nil {
 					panic(err)
 				}
-				log.Println("开奖结果：", result, id)
+				log.Println("开奖结果：", d.Name, result)
+				saveDrawedBlock(d.Name, schedule.Start, block.Number, d.Duration)
 			} else {
 				log.Println("第一块，保存到暂存区")
 				cacheFirstBlock(d.Name, schedule.Start, block.Number, d.Duration)

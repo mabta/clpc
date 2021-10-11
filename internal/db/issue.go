@@ -1,6 +1,7 @@
 package db
 
 import (
+	"strings"
 	"time"
 
 	"github.com/mabta/clpc/eth/blocktime"
@@ -47,4 +48,30 @@ func InsertIssue(issue *Issue) (uint64, error) {
 		return 0, err
 	}
 	return uint64(id), nil
+}
+
+func FindIssueBy(condition string, args ...interface{}) (*Issue, error) {
+	sb := strings.Builder{}
+	sb.WriteString("SELECT id,ticket, result, schedule, block_time, block_number, dateline, date_str  FROM issue ")
+	if condition != "" {
+		sb.WriteString(" WHERE ")
+		sb.WriteString(condition)
+	}
+	sb.WriteString(" LIMIT 1")
+	stmt, err := db.Prepare(sb.String())
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	issue := new(Issue)
+	row := stmt.QueryRow(args...)
+	if err := row.Scan(&issue.ID, &issue.Ticket, &issue.Result, &issue.Schedule, &issue.BlockTime, &issue.BlockNumber, &issue.Dateline, &issue.DateStr); err != nil {
+		return nil, err
+	}
+	return issue, nil
+}
+
+func FindIssue(id uint64) (*Issue, error) {
+	return FindIssueBy("id=$1", id)
 }
