@@ -25,6 +25,9 @@ func (s *Schedule) String() string {
 func (s *Schedule) FullString() string {
 	return fmt.Sprintf("%s - %s", blocktime.DateTimeStr(s.Start), blocktime.DateTimeStr(s.End))
 }
+func (s *Schedule) IssueStr() string {
+	return blocktime.IssueStr(s.Start)
+}
 
 // DailySchedule 生成当天计划
 func DailySchedule(start time.Time, duration, diffDuration time.Duration, nums int) (schedules []*Schedule) {

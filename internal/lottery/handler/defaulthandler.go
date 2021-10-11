@@ -3,9 +3,12 @@ package handler
 import (
 	"fmt"
 	"log"
+	"strings"
 	"time"
 
 	"github.com/mabta/clpc/defs"
+	"github.com/mabta/clpc/defs/draw"
+	"github.com/mabta/clpc/internal/db"
 	"github.com/mabta/clpc/internal/lottery"
 	"github.com/mabta/clpc/internal/redis"
 )
@@ -17,6 +20,7 @@ func DefaultHandler(describies []*lottery.Describe, block *defs.Block) {
 		}
 	}()
 	for _, d := range describies {
+		d.SetBlock(block)
 		for _, schedule := range d.Schedule() {
 			// 判断区块时间
 			if !schedule.IsIn(block.Time) {
@@ -34,7 +38,12 @@ func DefaultHandler(describies []*lottery.Describe, block *defs.Block) {
 				// 开奖
 				result := d.Draw()
 				// 保存开奖结果
-				log.Println("开奖结果：", result)
+				issue := db.NewIssue(d.Name, drawResult2Str(result), schedule.IssueStr(), block.Time, block.Number)
+				id, err := db.InsertIssue(issue)
+				if err != nil {
+					panic(err)
+				}
+				log.Println("开奖结果：", result, id)
 			} else {
 				log.Println("第一块，保存到暂存区")
 				cacheFirstBlock(d.Name, schedule.Start, block.Number, d.Duration)
@@ -81,4 +90,15 @@ func cacheFirstBlock(ticketName string, schedule uint64, blockNumber uint64, dur
 func saveDrawedBlock(ticketName string, schedule uint64, blockNumber uint64, duration time.Duration) {
 	key := drawedKey(ticketName, schedule)
 	redisSet(key, blockNumber, duration)
+}
+
+func drawResult2Str(result []draw.Result) string {
+	sb := strings.Builder{}
+	for i, r := range result {
+		sb.WriteString(fmt.Sprintf("%d", int(r)))
+		if i < len(result)-1 {
+			sb.WriteString(",")
+		}
+	}
+	return sb.String()
 }

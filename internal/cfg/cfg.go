@@ -10,6 +10,7 @@ type Config struct {
 	Eth     *EthConfig      `json:"eth"`
 	Tickets []*TicketConfig `json:"tickets"`
 	Redis   *RedisConfig    `json:"redis"`
+	DB      *DBConfig       `json:"db"`
 }
 
 type EthConfig struct {
@@ -30,6 +31,9 @@ type RedisConfig struct {
 	Addr     string `json:"addr"`
 	Password string `json:"password"`
 	DB       int    `json:"db"`
+}
+type DBConfig struct {
+	DSN string `json:"dsn"`
 }
 
 var Settings *Config

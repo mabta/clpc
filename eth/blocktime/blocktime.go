@@ -20,6 +20,9 @@ func TimeStr(blockTime uint64) string {
 func DateTimeStr(blockTime uint64) string {
 	return ToTime(blockTime).Format("2006/01/02 15:04:05")
 }
+func IssueStr(blockTime uint64) string {
+	return ToTime(blockTime).Format("20060102 15:04")
+}
 
 // ToDateUnix 区块时间转为日期(零点)对应的时间戳
 func ToDateUnix(blocktime uint64) uint64 {
