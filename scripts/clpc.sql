@@ -5,6 +5,7 @@ CREATE TABLE issue(
     schedule VARCHAR NOT NULL,
     block_time bigint NOT NULL,
     block_number bigint NOT NULL,
+    block_hash VARCHAR NOT NULL,
     dateline bigint not NULL,
     date_str VARCHAR not null
 );

@@ -38,7 +38,7 @@ func DefaultHandler(describies []*lottery.Describe, block *defs.Block) {
 				// 开奖
 				result := d.Draw()
 				// 保存开奖结果
-				issue := db.NewIssue(d.Name, drawResult2Str(result), schedule.IssueStr(), block.Time, block.Number)
+				issue := db.NewIssue(d.Name, drawResult2Str(result), schedule.IssueStr(), block.Hash, block.Time, block.Number)
 				if _, err := db.InsertIssue(issue); err != nil {
 					panic(err)
 				}

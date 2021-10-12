@@ -16,3 +16,8 @@ func Init(dsn string) (err error) {
 	}
 	return nil
 }
+
+// IsNoRows 判断是否属于没有数据行的错误
+func IsNoRows(err error) bool {
+	return err == sql.ErrNoRows
+}
