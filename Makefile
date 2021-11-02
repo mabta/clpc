@@ -1,5 +1,6 @@
 build: build.web build.clpcd
-	@tar zcvf ./target/clpc.tar.gz  ./target/clpc
+	@cd ./target && \
+	tar zcvf clpc.tar.gz  clpc
 
 build.web: internal/cmd/web/web.go
 	@mkdir -p ./target/clpc && \
