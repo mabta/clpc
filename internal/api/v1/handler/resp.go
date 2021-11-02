@@ -32,6 +32,11 @@ type PeriodResp struct {
 
 // PeriodRespFromIssue 将数据库中的开奖结果转换为开奖结果响应
 func PeriodRespFromIssue(issue *db.Issue) *PeriodResp {
+	now := uint64(time.Now().Unix())
+	disNextPeriodTime := uint64(0)
+	if issue.NextPeriodSchedule > now {
+		disNextPeriodTime = issue.NextPeriodSchedule - now
+	}
 	return &PeriodResp{
 		Period:            issue.Period,
 		Numbers:           issue.Result,
@@ -39,7 +44,7 @@ func PeriodRespFromIssue(issue *db.Issue) *PeriodResp {
 		CollectTime:       blocktime.DateTimeStrToApi(issue.BlockTime),
 		NextPeriod:        issue.NextPeriod,
 		NextPerIodTime:    blocktime.DateTimeStrToApi(issue.NextPeriodSchedule),
-		DisNextPerIodTime: issue.NextPeriodSchedule - uint64(time.Now().Unix()),
+		DisNextPerIodTime: disNextPeriodTime,
 	}
 }
 
