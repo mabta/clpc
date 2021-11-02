@@ -1,6 +1,6 @@
 build: build.web build.clpcd
 	@cd ./target && \
-	cp -rf ../scripts ./ && \
+	cp -rf ../scripts ./clpc && \
 	tar zcvf clpc.tar.gz  clpc
 
 build.web: internal/cmd/web/web.go
