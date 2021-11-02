@@ -2,16 +2,18 @@ package handler
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/mabta/clpc/errs"
+	"github.com/mabta/clpc/eth/blocktime"
 	"github.com/mabta/clpc/internal/db"
 )
 
 // PeriodResp 开奖结果响应
 type PeriodResp struct {
 	// Period 期数
-	Period int `json:"period"`
+	Period uint64 `json:"period"`
 	// Numbers 开奖结果
 	Numbers string `json:"numbers"`
 	// OpenTime 计划开奖时间
@@ -19,20 +21,25 @@ type PeriodResp struct {
 	// CollectTime 实际开奖时间
 	CollectTime string `json:"collectTime"`
 	// NextPeriod 下一期的期数
-	NextPeriod int `json:"nextPeriod"`
+	NextPeriod uint64 `json:"nextPeriod"`
 	// NextPerIodTime 下一期计划开奖时间
 	NextPerIodTime string `json:"nextPeriodTime"`
 	// DisNextPerIodTime 距离下一期开奖还有多久
-	DisNextPerIodTime int `json:"disNextPeriodTime"`
+	DisNextPerIodTime uint64 `json:"disNextPeriodTime"`
+	// HasNextPeriod 是否有下期
+	//HasNextPeriod bool `json:"hasNextPeriod"`
 }
 
 // PeriodRespFromIssue 将数据库中的开奖结果转换为开奖结果响应
 func PeriodRespFromIssue(issue *db.Issue) *PeriodResp {
 	return &PeriodResp{
-		Period:      0,
-		Numbers:     issue.Result,
-		OpenTime:    issue.Schedule,
-		CollectTime: "",
+		Period:            issue.Period,
+		Numbers:           issue.Result,
+		OpenTime:          blocktime.DateTimeStrToApi(issue.Schedule),
+		CollectTime:       blocktime.DateTimeStrToApi(issue.BlockTime),
+		NextPeriod:        issue.NextPeriod,
+		NextPerIodTime:    blocktime.DateTimeStrToApi(issue.NextPeriodSchedule),
+		DisNextPerIodTime: issue.NextPeriodSchedule - uint64(time.Now().Unix()),
 	}
 }
 

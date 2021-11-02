@@ -1,0 +1,25 @@
+{
+  "eth": {
+    "provider": "wss://ws-mainnet-node.huobichain.com"
+  },
+  "tickets": [
+    {
+      "name": "xyft",
+      "start_hour": 14,
+      "start_minute": 27,
+      "duration": 2,
+      "diff_duration": 30,
+      "decimal": 10,
+      "daily_times": 180,
+      "drawer": "simple"
+    }
+  ],
+  "redis": {
+    "addr": "127.0.0.1:16379",
+    "password": "",
+    "db": 0
+  },
+  "db": {
+    "dsn": "user=clpc password=9mqexnfukpeeC6Ze5fXgkBE6xFHwz5Zuzf27BvAN dbname=clpc host=127.0.0.1 port=15432 sslmode=disable"
+  }
+}

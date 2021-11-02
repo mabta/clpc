@@ -21,7 +21,8 @@ func DefaultHandler(describies []*lottery.Describe, block *defs.Block) {
 	}()
 	for _, d := range describies {
 		d.SetBlock(block)
-		for _, schedule := range d.Schedule() {
+		schedules := d.Schedule()
+		for idx, schedule := range schedules {
 			// 判断区块时间
 			if !schedule.IsIn(block.Time) {
 				log.Println("不在开奖时间内，跳过")
@@ -35,10 +36,13 @@ func DefaultHandler(describies []*lottery.Describe, block *defs.Block) {
 			// 是否第一块
 			if hasFirstBlock(d.Name, schedule.Start) {
 				// 第2块
+				// 期数
+				period := lottery.GetPeriod(schedule.Start, idx)
+				nextPeriod, nextPeriodTime, _ := lottery.GetNextPeriod(idx, schedules)
 				// 开奖
 				result := d.Draw()
 				// 保存开奖结果
-				issue := db.NewIssue(d.Name, drawResult2Str(result), schedule.IssueStr(), block.Hash, block.Time, block.Number)
+				issue := db.NewIssue(d.Name, drawResult2Str(result), schedule.Start, block.Hash, block.Time, block.Number, period, nextPeriod, nextPeriodTime)
 				if _, err := db.InsertIssue(issue); err != nil {
 					panic(err)
 				}

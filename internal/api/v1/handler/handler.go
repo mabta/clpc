@@ -22,13 +22,17 @@ func Current(c *gin.Context) *errs.Error {
 	if issues == nil || len(issues) == 0 {
 		return errs.NotFoundError()
 	}
-	Success(c, PeriodRespFromIssue(issues[:1]))
+	Success(c, PeriodRespFromIssue(issues[0]))
 	return nil
 }
 
 // Latest 最新结果
 func Latest(c *gin.Context) *errs.Error {
-	issues, err := db.TopIssues(30, "")
+	lotteryType := c.Query("lotteryType")
+	if lotteryType == "" {
+		return errs.NewInvalidParam()
+	}
+	issues, err := db.TopIssues(30, "ticket=$1", lotteryType)
 	if err != nil {
 		return errs.ToDbError(err)
 	}
@@ -47,7 +51,7 @@ func Period(c *gin.Context) *errs.Error {
 	if lotteryType == "" || period == "" {
 		return errs.NewInvalidParam()
 	}
-	issue, err := db.FindIssueBy("ticket=$1 AND schedule=$2", lotteryType, period)
+	issue, err := db.FindIssueBy("ticket=$1 AND period=$2", lotteryType, period)
 	if err == sql.ErrNoRows {
 		return errs.NotFoundError()
 	}
