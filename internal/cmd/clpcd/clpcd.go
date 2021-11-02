@@ -23,10 +23,13 @@ func init() {
 }
 
 func main() {
-	engine, err := lottery.NewEngine(cfg.Settings.Eth.Provider, handler.DefaultHandler)
-	if err != nil {
-		log.Fatal(err)
+	for {
+		log.Println("启动服务端")
+		engine, err := lottery.NewEngine(cfg.Settings.Eth.Provider, handler.DefaultHandler)
+		if err != nil {
+			log.Fatal(err)
+		}
+		engine.LoadDescribies(cfg.Settings.Tickets)
+		log.Println(engine.Serve())
 	}
-	engine.LoadDescribies(cfg.Settings.Tickets)
-	log.Fatal(engine.Serve())
 }

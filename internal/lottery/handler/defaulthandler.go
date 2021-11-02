@@ -25,14 +25,15 @@ func DefaultHandler(describies []*lottery.Describe, block *defs.Block) {
 		for idx, schedule := range schedules {
 			// 判断区块时间
 			if !schedule.IsIn(block.Time) {
-				log.Println("不在开奖时间内，跳过")
+				//log.Println("不在开奖时间内，跳过")
 				continue
 			}
 			// 是否已开奖
 			if isDrawed(d.Name, schedule.Start) {
-				log.Println("已开奖，跳过")
+				//log.Println("已开奖，跳过")
 				continue
 			}
+			log.Print("当前执行计划开奖：" + schedule.String())
 			// 是否第一块
 			if hasFirstBlock(d.Name, schedule.Start) {
 				// 第2块
@@ -46,7 +47,7 @@ func DefaultHandler(describies []*lottery.Describe, block *defs.Block) {
 				if _, err := db.InsertIssue(issue); err != nil {
 					panic(err)
 				}
-				log.Println("开奖结果：", d.Name, result)
+				log.Println(period, "开奖结果：", d.Name, result)
 				saveDrawedBlock(d.Name, schedule.Start, block.Number, d.Duration)
 			} else {
 				log.Println("第一块，保存到暂存区")

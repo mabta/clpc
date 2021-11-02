@@ -8,6 +8,7 @@ import (
 
 type Config struct {
 	Eth     *EthConfig      `json:"eth"`
+	Web     *WebConfig      `json:"web"`
 	Tickets []*TicketConfig `json:"tickets"`
 	Redis   *RedisConfig    `json:"redis"`
 	DB      *DBConfig       `json:"db"`
@@ -15,6 +16,10 @@ type Config struct {
 
 type EthConfig struct {
 	Provider string `json:"provider"`
+}
+
+type WebConfig struct {
+	Addr string `json:"addr"`
 }
 
 type TicketConfig struct {

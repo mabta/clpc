@@ -22,5 +22,5 @@ func main() {
 	e := gin.New()
 	e.Use(gin.Logger(), gin.Recovery())
 	handler.RegisterRouter(e)
-	log.Fatal(e.Run(":8888"))
+	log.Fatal(e.Run(cfg.Settings.Web.Addr))
 }
