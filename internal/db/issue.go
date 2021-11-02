@@ -89,6 +89,15 @@ func FindIssue(id uint64) (*Issue, error) {
 	return FindIssueBy("id=$1", id)
 }
 
+// TopIssues 最新N期
+func TopIssues(n int, condition string, args ...interface{}) ([]*Issue, error) {
+	issues, _, err := SelectIssues(0, n, condition, args...)
+	if err != nil {
+		return nil, err
+	}
+	return issues, nil
+}
+
 // SelectIssues 分页查找所有符合条件的开奖结果
 func SelectIssues(page, pageSize int, condition string, args ...interface{}) ([]*Issue, *Pagination, error) {
 	sb := strings.Builder{}

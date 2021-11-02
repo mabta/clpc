@@ -11,7 +11,7 @@ import (
 )
 
 func init() {
-	if err := cfg.InitFrom("../../../config.json"); err != nil {
+	if err := cfg.Init(); err != nil {
 		log.Fatal(err)
 	}
 	if err := redis.InitFrom(cfg.Settings.Redis); err != nil {
