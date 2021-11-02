@@ -6,6 +6,7 @@ const (
 	InvalidParam         = 1002
 	NotFound             = 1003
 	InvalidLotteryFormat = 1201
+	BadRequest           = 9999
 )
 
 func ToDbError(err error) *Error {

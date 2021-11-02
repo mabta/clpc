@@ -13,7 +13,7 @@ func JSONWrap(f func(*gin.Context) *errs.Error) gin.HandlerFunc {
 		if err := f(c); err != nil {
 			log.Printf("[%s] %#v\n", c.Request.RequestURI, err)
 			c.JSON(http.StatusOK, gin.H{
-				"code": 111,
+				"code": err.Code,
 				"msg":  err.Error(),
 			})
 			c.Abort()
