@@ -2,13 +2,13 @@ package handler
 
 import (
 	"fmt"
-	"log"
 	"strings"
 	"time"
 
 	"github.com/mabta/clpc/defs"
 	"github.com/mabta/clpc/defs/draw"
 	"github.com/mabta/clpc/internal/db"
+	"github.com/mabta/clpc/internal/log"
 	"github.com/mabta/clpc/internal/lottery"
 	"github.com/mabta/clpc/internal/redis"
 )
@@ -16,7 +16,7 @@ import (
 func DefaultHandler(describies []*lottery.Describe, block *defs.Block) {
 	defer func() {
 		if p := recover(); p != nil {
-			log.Println("事情大条了：", p)
+			log.Logger.Error("事情大条了：", p)
 		}
 	}()
 	for _, d := range describies {
@@ -33,7 +33,7 @@ func DefaultHandler(describies []*lottery.Describe, block *defs.Block) {
 				//log.Println("已开奖，跳过")
 				continue
 			}
-			log.Print(d.Name, "当前执行计划开奖："+schedule.String())
+			log.Logger.Debug(d.Name, "当前执行计划开奖："+schedule.String())
 			// 是否第一块
 			if hasFirstBlock(d.Name, schedule.Start) {
 				// 第2块
@@ -47,10 +47,10 @@ func DefaultHandler(describies []*lottery.Describe, block *defs.Block) {
 				if _, err := db.InsertIssue(issue); err != nil {
 					panic(err)
 				}
-				log.Println(period, "开奖结果：", d.Name, result)
+				log.Logger.Debug(period, "开奖结果：", d.Name, result)
 				saveDrawedBlock(d.Name, schedule.Start, block.Number, d.Duration)
 			} else {
-				log.Println("第一块，保存到暂存区")
+				log.Logger.Debug("第一块，保存到暂存区")
 				cacheFirstBlock(d.Name, schedule.Start, block.Number, d.Duration)
 			}
 		}

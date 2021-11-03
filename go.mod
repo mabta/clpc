@@ -26,10 +26,14 @@ require (
 	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
+	github.com/natefinch/lumberjack v2.0.0+incompatible // indirect
 	github.com/shirou/gopsutil v3.21.4-0.20210419000835-c7a38de76ee5+incompatible // indirect
 	github.com/tklauser/go-sysconf v0.3.5 // indirect
 	github.com/tklauser/numcpus v0.2.2 // indirect
 	github.com/ugorji/go/codec v1.2.6 // indirect
+	go.uber.org/atomic v1.9.0 // indirect
+	go.uber.org/multierr v1.7.0 // indirect
+	go.uber.org/zap v1.19.1 // indirect
 	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519 // indirect
 	golang.org/x/sys v0.0.0-20211031064116-611d5d643895 // indirect
 	golang.org/x/text v0.3.7 // indirect

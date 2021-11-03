@@ -12,6 +12,7 @@ type Config struct {
 	Tickets []*TicketConfig `json:"tickets"`
 	Redis   *RedisConfig    `json:"redis"`
 	DB      *DBConfig       `json:"db"`
+	Log     *LogConfig      `json:"log"`
 }
 
 type EthConfig struct {
@@ -40,6 +41,14 @@ type RedisConfig struct {
 type DBConfig struct {
 	DSN string `json:"dsn"`
 }
+type LogConfig struct {
+	Level      string `json:"level"`
+	Filename   string `json:"filename"`
+	MaxSize    int    `json:"max_size"`
+	MaxBackups int    `json:"max_backups"`
+	MaxAge     int    `json:"max_age"`
+	Compress   bool   `json:"compress"`
+}
 
 var Settings *Config
 
@@ -55,6 +64,9 @@ func InitFrom(filename string) error {
 	for _, t := range Settings.Tickets {
 		t.Duration = t.Duration * time.Minute
 		t.DiffDuration = t.DiffDuration * time.Second
+	}
+	if Settings.Log.Filename == "" {
+		Settings.Log.Filename = "./clpc.log"
 	}
 	return nil
 }
