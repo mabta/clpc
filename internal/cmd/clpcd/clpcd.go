@@ -27,7 +27,8 @@ func main() {
 		log.Println("启动服务端")
 		engine, err := lottery.NewEngine(cfg.Settings.Eth.Provider, handler.DefaultHandler)
 		if err != nil {
-			log.Fatal(err)
+			log.Println("连接以太坊网络出错：", err)
+			continue
 		}
 		engine.LoadDescribies(cfg.Settings.Tickets)
 		log.Println(engine.Serve())

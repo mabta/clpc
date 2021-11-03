@@ -17,13 +17,20 @@ func GetPeriod(schedule uint64, idx int) uint64 {
 }
 
 // GetNextPeriod 获取下一期
-func GetNextPeriod(idx int, schedules []*defs.Schedule) (nextPeroid, nextPeroidSchedule uint64, ok bool) {
+func GetNextPeriod(idx int, schedules []*defs.Schedule) (nextPeroid, nextPeroidSchedule uint64) {
 	schedulesNum := len(schedules)
 	lastIdx := schedulesNum - 1
 	nextIdx := idx + 1
 	if nextIdx > lastIdx {
-		return 0, 0, false
+		return GetNextDayFirstPeriod(schedules[0].Start)
 	}
 	nextSchedule := schedules[nextIdx].Start
-	return GetPeriod(nextSchedule, nextIdx), nextSchedule, true
+	return GetPeriod(nextSchedule, nextIdx), nextSchedule
+}
+
+// GetNextDayFirstPeriod 获取下一天的第一期
+func GetNextDayFirstPeriod(todayStart uint64) (firstPeriod, firstPeriodSchedule uint64) {
+	nextDayFirstStart := todayStart + 86400
+	nextDayFirstPeriod := GetPeriod(nextDayFirstStart, 0)
+	return nextDayFirstPeriod, nextDayFirstStart
 }

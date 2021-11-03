@@ -33,13 +33,13 @@ func DefaultHandler(describies []*lottery.Describe, block *defs.Block) {
 				//log.Println("已开奖，跳过")
 				continue
 			}
-			log.Print("当前执行计划开奖：" + schedule.String())
+			log.Print(d.Name, "当前执行计划开奖："+schedule.String())
 			// 是否第一块
 			if hasFirstBlock(d.Name, schedule.Start) {
 				// 第2块
 				// 期数
 				period := lottery.GetPeriod(schedule.Start, idx)
-				nextPeriod, nextPeriodTime, _ := lottery.GetNextPeriod(idx, schedules)
+				nextPeriod, nextPeriodTime := lottery.GetNextPeriod(idx, schedules)
 				// 开奖
 				result := d.Draw()
 				// 保存开奖结果
